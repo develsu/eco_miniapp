@@ -2,17 +2,19 @@ import React from 'react'
 import { tg } from '../lib/telegram'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '../state/useAppStore'
+import { useTranslation } from 'react-i18next'
 
 export default function ScannerButton() {
   const nav = useNavigate()
   const setStationId = useAppStore(s=>s.setStationId)
+  const { t } = useTranslation()
 
   const onScan = () => {
     if (!tg?.showScanQrPopup) {
       alert('QR-сканер Telegram недоступен')
       return
     }
-    tg.showScanQrPopup({ text: 'Наведи на QR станции' }, (res) => {
+    tg.showScanQrPopup({ text: t('scan_prompt') }, (res) => {
       const data = res?.data || ''
       try {
         const station = parseStationQr(data)
@@ -24,7 +26,7 @@ export default function ScannerButton() {
     })
   }
 
-  return <button className="btn btn-primary w-full" onClick={onScan}>Сканировать станцию</button>
+  return <button className="btn btn-primary w-full" onClick={onScan}>{t('scan_station')}</button>
 }
 
 export function parseStationQr(qr: string): string {
