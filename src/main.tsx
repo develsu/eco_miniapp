@@ -9,6 +9,7 @@ import MapPage from './pages/Map'
 import Diag from './pages/Diag'
 import './i18n'
 import './styles.css'
+import { initLogger } from './lib/logger'
 
 const router = createBrowserRouter([
   { path: '/', element: <App />, children: [
@@ -30,3 +31,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </React.StrictMode>
 )
+
+// initialize error logging
+initLogger()
