@@ -3,14 +3,16 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { useUserStatus } from '../hooks/useUserStatus'
+import { useTranslation } from 'react-i18next'
 
 const tiles = import.meta.env.VITE_MAP_TILES as string
 const traccar = import.meta.env.VITE_TRACCAR_URL as string
 
 export default function BatteryMap() {
+  const { t } = useTranslation()
   const { data } = useUserStatus()
   const loc = data?.last_location
-  if (!loc) return <div className="card">Пока нет координат</div>
+  if (!loc) return <div className="card">{t('no_coords')}</div>
   const pos: [number, number] = [loc.lat, loc.lon]
   return <div className="card">
     <div className="h-80 rounded-xl overflow-hidden">
@@ -21,7 +23,7 @@ export default function BatteryMap() {
             <div className="space-y-1">
               <div>lat: {loc.lat.toFixed(6)} lon: {loc.lon.toFixed(6)}</div>
               {loc.accuracy && <div>±{Math.round(loc.accuracy)} м</div>}
-              <a className="btn" href={traccar} target="_blank" rel="noreferrer">Открыть в Traccar</a>
+              <a className="btn" href={traccar} target="_blank" rel="noreferrer">{t('open_in_traccar')}</a>
             </div>
           </Popup>
         </Marker>
